@@ -67,6 +67,7 @@ function solution(survey, choices) {
 */
 
 /*시간초과 나타나는 이유 :
+사실 테스트케이스가 우연히 맞았을 뿐, 시간초과 문제가 아니라 계산이 틀렸었음
 result[type1] = table[num];
 ->이 부분에서 +=가 아닌 =만 사용하였기 때문
 */
