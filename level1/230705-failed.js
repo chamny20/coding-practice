@@ -67,7 +67,6 @@ function solution(survey, choices) {
 */
 
 /*시간초과 나타나는 이유 :
-반복문: 코드에서는 for 반복문을 사용하여 survey 배열을 순회 
-survey 배열의 길이가 n이라면, 이 반복문은 n번 반복 
-따라서 survey 배열의 크기가 커질수록 반복문의 수행 시간도 선형적으로 증가하게 된다.
+result[type1] = table[num];
+->이 부분에서 +=가 아닌 =만 사용하였기 때문
 */
