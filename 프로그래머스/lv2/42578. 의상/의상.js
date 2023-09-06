@@ -15,23 +15,9 @@ function solution(clothes) {
     
     for (let key in arr) {
         console.log(arr[key]);
+        //A,B,C일 경우 => (A+1)(B+1)(C+1)
         answer *= arr[key] + 1;
     }
-    
-    // for (let value of sum) {
-    //     answer += value;
-    // }
-    // console.log("answer:",answer);
-    // console.log(sum);
-    // if(sum.length > 1) {
-    //     for (let i=0; i<sum.length; i++) {
-    //     answer *= sum[i]
-    //     console.log(answer);
-    //     //(A,B,C일때) => (A+1)(B+1)(C+1)
-    //     }
-    //     answer--;
-    // } 
-    
     
     return answer-1;
 }
