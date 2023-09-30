@@ -15,11 +15,6 @@ function solution(genres, plays) {
         console.log(countArr);
     })
     
-    genres.forEach((item, idx) => {
-        type[idx] = item;
-    })
-    
-    console.log(type);
     
     let sortedGenres = Object.keys(countArr).sort((a,b) => countArr[b]-countArr[a]);
     console.log("here:",sortedGenres);
