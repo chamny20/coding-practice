@@ -1,13 +1,9 @@
-const fs = require('fs');
+const input = require('fs').readFileSync('/dev/stdin').toString().split('\n');
+const n = parseInt(input[0]);
+let sum = 0;
 
-const input = fs.readFileSync("/dev/stdin").toString().trim();
-
-let inputNumber = Number(input)
-
-let answer = 0;
-
-for(let i = 1; i<=inputNumber; i++) {
-  answer += i
+for (let i=1; i<=n; i++) {
+    sum += i;
 }
 
-console.log(answer);
+console.log(sum);
