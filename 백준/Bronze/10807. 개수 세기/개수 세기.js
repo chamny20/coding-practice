@@ -9,7 +9,7 @@ const v = input[2];
 let ans = 0;
 
 for (let i=0; i<cnt; i++) {
-    if(v === arr[i]) ans++;
+    ans = arr.filter((el) => el=== v).length;
 }
 
 console.log(ans);
