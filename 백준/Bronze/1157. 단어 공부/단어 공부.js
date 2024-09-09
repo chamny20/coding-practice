@@ -13,9 +13,10 @@ for (let char of input) {
 let strCountArr = Object.entries(strCount);
 strCountArr.sort((a, b) => b[1] - a[1]);
 
-// 빈도수가 같은 문자가 있는지 확인
+let maxKey = strCountArr[0][0];
 if (strCountArr.length > 1 && strCountArr[0][1] === strCountArr[1][1]) {
     console.log("?");
 } else {
-    console.log(strCountArr[0][0]);
+    console.log(maxKey);
 }
+
