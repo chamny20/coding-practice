@@ -1,23 +1,23 @@
 function solution(progresses, speeds) {
-    var answer = [];
-    let restDay = [];
-    let funcCnt = 1;
+    let arr = [];
+    let ans = [];
+    let task = progresses.map((x) => 100 - x);
+    // console.log("task", task);
     
-    progresses.forEach((progress, idx) => {
-        restDay.push(Math.ceil((100-progress) / speeds[idx]));
-    })
+    let rest = task.map((x, idx) => Math.ceil(x / speeds[idx]));
     
-    let maxDay = restDay[0];
+    let cnt = 1;
+    let maxDay = rest[0];
     
-    for (let i=1; i<restDay.length; i++) {
-        if(restDay[i]>maxDay) {
-            maxDay = restDay[i];
-            answer.push(funcCnt);
-            funcCnt = 1;
+    for (let i=1; i<rest.length; i++) {
+        if(rest[i] > maxDay) {
+            maxDay = rest[i];
+            ans.push(cnt);
+            cnt = 1;
         } else {
-            funcCnt++;            
+            cnt++;
         }
     }
-    answer.push(funcCnt);
-    return answer;
+    ans.push(cnt);
+    return ans;
 }
