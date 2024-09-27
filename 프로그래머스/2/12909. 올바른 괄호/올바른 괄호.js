@@ -1,20 +1,19 @@
 function solution(s){
-    let answer = false;
-    let stack = 0;
-    //stack은 결국 0이 되어야 함
+    let stack = [];
     
     for (let i=0; i<s.length; i++) {
-        stack += s[i] =='(' ? +1 : -1; 
-      
-        if (stack < 0)
-            return answer;
+        if (s[i] === '(') {
+            stack.push(1);
+        } else if (s[i] === ')') {
+            if (stack.length > 0)
+                stack.pop();
+            else
+                return false;
+        }
     }
     
-    if (stack == 0)
-        answer = true;
+    if (stack.length)
+        return false;
     else
-        answer = false;
-
-
-    return answer;
+        return true;
 }
