@@ -19,23 +19,23 @@ for (let i=0; i<arr.length; i++) {
     
     switch (str) {
         case '+':
-            a = parseFloat(stack.pop());
-            b = parseFloat(stack.pop());
+            a = stack.pop();
+            b = stack.pop();
             stack.push(b+a);
             break;
         case '-':
-            a = parseFloat(stack.pop());
-            b = parseFloat(stack.pop());
+            a = stack.pop();
+            b = stack.pop();
             stack.push(b-a);
             break;
         case '*':
-            a = parseFloat(stack.pop());
-            b = parseFloat(stack.pop());
+            a = stack.pop();
+            b = stack.pop();
             stack.push(b*a);
             break;
         case '/':
-            a = parseFloat(stack.pop());
-            b = parseFloat(stack.pop());
+            a = stack.pop();
+            b = stack.pop();
             stack.push(b/a);
             break;
         default:
