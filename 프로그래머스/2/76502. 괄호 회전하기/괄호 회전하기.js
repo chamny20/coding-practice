@@ -2,38 +2,29 @@ function solution(s) {
     var answer = 0;
     let arr = s.split("");
     
-    for (let i = 0; i < arr.length; i++) {
-        if (i !== 0) {
+    for (let i=0; i<arr.length; i++) {
+        if(i!==0) {
             arr.push(arr.shift());
         }
         
         let stack = [];
-        let isValid = true;
-
-        // 짝이 맞는지 로직 체크
-        for (let j = 0; j < arr.length; j++) {
-            if (arr[j] === '[' || arr[j] === '(' || arr[j] === '{') {
-                stack.push(arr[j]);
+        console.log(arr);
+          // 짝 맞는지 로직 체크
+        for (let i=0; i<arr.length; i++) {
+            if (arr[i] === '['|| arr[i] === '(' || arr[i] === '{') {
+                stack.push(arr[i]);
             } else {
-                if (stack.length > 0) {
-                    let last = stack.pop();
-                    if (
-                        (arr[j] === ')' && last !== '(') ||
-                        (arr[j] === ']' && last !== '[') ||
-                        (arr[j] === '}' && last !== '{')
-                    ) {
-                        isValid = false;
-                        // break;
-                    }
-                } else {
-                    isValid = false;
-                    // break;
-                }
+                if (stack.length > 0)
+                    stack.pop();
+                else
+                    return false;
             }
         }
-        
-        if (isValid && stack.length === 0) answer++;
+        if (stack.length===0) answer++;
     }
+    
+    
+  
     
     return answer;
 }
