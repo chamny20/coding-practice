@@ -12,8 +12,6 @@ function solution(s){
         }
     }
     
-    if (stack.length)
-        return false;
-    else
-        return true;
+    
+    return stack.length === 0;
 }
