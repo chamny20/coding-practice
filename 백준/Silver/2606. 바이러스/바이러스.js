@@ -1,27 +1,31 @@
-let input = require("fs").readFileSync("/dev/stdin").toString().split("\n");
+const input = require('fs').readFileSync('/dev/stdin').toString().trim().split('\n');
+const n = Number(input.shift());
+const cnt = Number(input.shift());
+let arr = input.map((v) => v.split(" ").map(Number));
 
-let comLen = Number(input.shift());
-let n = Number(input.shift());
-let ans = 0;
-let graph = Array.from({length: comLen + 1}, () => []);
-let visited = new Array(comLen+1).fill(false);
+let graph = {};
+// 인접리스트 그래프 만들기
+arr.map(([u, v]) => {
+   if (!graph[u]) graph[u] = [];
+   graph[u].push(v);
+    
+   if (!graph[v]) graph[v] = [];
+   graph[v].push(u);
+});
 
-for (let i=0; i<n; i++) {
-    let [start, end] = input[i].split(" ").map(Number);
-    graph[start].push(end);
-    graph[end].push(start);
-}
-
-function dfs(start) {
-    for (let end of graph[start]) {
-        if (!visited[end]) {
-            visited[end] = true;
-            ans++;
-            dfs(end);
+const dfs = (node, visited, result) => {
+    visited.add(node);
+    result.push(node);
+    
+    (graph[node] || []).forEach((neighbor) => {
+        if (!visited.has(neighbor)) {
+            dfs(neighbor, visited, result);
         }
-    }
+    });
 }
 
-visited[1] = true;
-dfs(1);
-console.log(ans);
+const visited = new Set();
+const result = [];
+dfs(1, visited, result);
+
+console.log(result.length-1);
