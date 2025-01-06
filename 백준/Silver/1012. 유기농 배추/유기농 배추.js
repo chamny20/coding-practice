@@ -20,9 +20,9 @@ const dfs = (x, y, m, n, maps, visited) => {
 
 for (let i=0; i<t; i++) {
     const [m, n, k] = input.shift().split(" ").map(Number);  
-    let maps = Array.from({length: m}, () => Array(n).fill(0));
+    let maps = Array.from(Array(m), () => Array(n).fill(0));
     let cnt = 0;
-    let visited = Array.from({length: m}, () => Array(n).fill(false));
+    let visited = Array.from(Array(m), () => Array(n).fill(false));
     
     for (let j=0; j<k; j++) {
         const [x, y] = input.shift().split(" ").map(Number);
