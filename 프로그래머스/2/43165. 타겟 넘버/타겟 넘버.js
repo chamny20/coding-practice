@@ -1,19 +1,21 @@
 function solution(numbers, target) {
-    var answer = 0;
+    let answer = 0;
+    const visited = {};
+    const result = [];
     
-    function dfs(idx, sum) {
-        if (idx == numbers.length) {
-            if (sum == target) 
+    const dfs = (idx, currentSum) => {
+        if (idx === numbers.length) {
+            if (currentSum === target)
                 answer++;
             return;
         }
         
-        dfs(idx + 1, sum + numbers[idx]);
-        dfs(idx + 1, sum - numbers[idx]);
-        
+        dfs(idx+1, currentSum + numbers[idx]);
+        dfs(idx+1, currentSum - numbers[idx]);
     }
     
-    dfs(0, 0);
+    
+    dfs(0, 0)
     
     return answer;
 }
