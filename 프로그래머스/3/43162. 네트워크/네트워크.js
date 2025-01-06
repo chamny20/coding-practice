@@ -1,30 +1,34 @@
 function solution(n, computers) {
-    const visited = Array(n).fill(false);
+    let answer = 0;
+    const visited = new Array(n).fill(false);
     
-    const bfs = (start, visited, computers) => {
-        const queue = [start];
-        visited[start] = true;
-                
-        while (queue.length) {
-            const cur = queue.shift();
-            
-            for (let next=0; next<n; next++) {
-                if (computers[cur][next] && !visited[next]) {
-                    queue.push(next);
-                    visited[next] = true;
-                }
+    const graph = {};
+    // 양방향 그래프 생성
+    for (let i=0; i<n; i++) {
+        graph[i] = [];
+        for (let j=0; j<n; j++) {
+            if (i!==j && computers[i][j]===1) 
+                graph[i].push(j);
+        }
+    }
+    
+    const dfs = (idx, visited) => {
+        visited[idx] = true;
+        
+        for (let neighbor of graph[idx]) {
+            if (!visited[neighbor]) {
+                dfs(neighbor, visited);
             }
         }
     }
     
-    let areaCnt = 0;
-    
     for (let i=0; i<n; i++) {
         if (!visited[i]) {
-            bfs(i, visited, computers);
-            areaCnt++;
+            dfs(i, visited);
+            answer++;
         }
     }
     
-    return areaCnt;
+    
+    return answer;
 }
