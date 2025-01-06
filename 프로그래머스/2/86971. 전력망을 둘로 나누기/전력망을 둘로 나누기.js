@@ -1,45 +1,44 @@
 function solution(n, wires) {    
-    let answer = Infinity;
+    let result = [];
     
-    let visited = Array.from({length: n + 1}, () => false);
+    // 양방향 그래프 생성
+    const graph = {};
+    wires.forEach(([u, v]) => {
+        if (!graph[u]) graph[u] = [];
+        if (!graph[v]) graph[v] = [];
+        graph[u].push(v);
+        graph[v].push(u);
+    });
+    // console.log(graph);
     
-    // 1. 그래프 생성
-    const graph = Array.from({length: n + 1}, () => []);
-    
-    for (const [a, b] of wires) {
-        graph[a].push(b);
-        graph[b].push(a);
-    }
-
-    let count = 1;
-    
-    // DFS function
-    function dfs(node, visited) {
-       visited[node] = true;
-        let count = 1;
+    const dfs = (node, visited) => {
+        let netSize = 1; // 현재 노드 하나 추가
+        visited[node] = true;
         
-        for (let adjNode of graph[node]) {
-            if (!visited[adjNode])
-                count += dfs(adjNode, visited);
+        for (const neighbor of graph[node]) {
+            if (!visited[neighbor]) {
+                netSize += dfs(neighbor, visited);
+            }
         }
-        return count;
+        return netSize;
     }
     
-    
-    for (let [a, b] of wires) {
-        let visited = Array(n+1).fill(false);
+    for (let [u, v] of wires) {
+        // 전선 제거하기
+        graph[u] = graph[u].filter((node) => node !== v);
+        graph[v] = graph[v].filter((node) => node !== u);
         
-        graph[a] = graph[a].filter(node => node !== b);
-        graph[b] = graph[b].filter(node => node !== a);
+        const visited = new Array(n).fill(false);
         
-        const countA = dfs(a, visited);
-        const diff = Math.abs(countA - (n - countA));
-        answer = Math.min(diff, answer);
+        let networkSize = dfs(u, visited);
+        let otherNetworkSize = n - networkSize;
         
-        graph[a].push(b);
-        graph[b].push(a);
+        result.push(Math.abs(networkSize - otherNetworkSize));
+        
+        // 전선 복구
+        graph[u].push(v);
+        graph[v].push(u);
     }
     
-    
-    return answer;
+    return Math.min(...result);
 }
