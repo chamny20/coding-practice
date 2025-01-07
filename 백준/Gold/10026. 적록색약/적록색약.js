@@ -1,51 +1,45 @@
-const filePath = process.platform === 'linux' ? '/dev/stdin' : './input.txt';
-const input = require('fs').readFileSync(filePath).toString().trim().split('\n');
-const N = Number(input.shift());
-const graph = input.map((v) => v.split(''));
-const dir = [[-1, 0], [1, 0], [0, 1], [0, -1]];
-let visited = Array.from(Array(N), () => Array(N).fill(false));
+const input = require('fs').readFileSync('/dev/stdin').toString().trim().split('\n');
+const n = Number(input.shift());
+const maps = input.map((v) => v.split(""));
+const abMaps = input.map((line) => 
+    line.split("").map((cell) => cell === 'G' ? 'R' : cell)
+);
+const visited = Array.from(Array(n), () => Array(n).fill(false));
+const dir = [[1, 0], [-1, 0], [0, 1], [0, -1]];
+let normalCnt = 0;
+let abnormalCnt = 0;
 
-const bfs = (r, c) => {
-  const queue = [[r, c]];
-  while (queue.length) {
-    const [cx, cy] = queue.shift();
-    for (let i = 0; i < 4; i++) {
-      const x = cx + dir[i][0];
-      const y = cy + dir[i][1];
-      if (x >= 0 && x < N && y >= 0 && y < N && !visited[x][y] && graph[cx][cy] == graph[x][y]) {
-        visited[x][y] = true;
-        queue.push([x, y]);
-      }
+const dfs = (start, visited, maps) => {
+    visited[start[0]][start[1]] = true;
+    
+    for (let i=0; i<dir.length; i++) {
+        const nx = start[0] + dir[i][0];
+        const ny = start[1] + dir[i][1];
+        
+        if (nx>=0 && ny>=0 && nx<n && ny<n && !visited[nx][ny] && maps[nx][ny] === maps[start[0]][start[1]]) {
+            dfs([nx, ny], visited, maps);
+        }
     }
-  }
-};
-
-let rgb = 0;
-for (let i = 0; i < N; i++) {
-  for (let j = 0; j < N; j++) {
-    if (!visited[i][j]) {
-      bfs(i, j);
-      rgb++;
-    }
-  }
 }
 
-visited = Array.from(Array(N), () => Array(N).fill(false));
-
-for (let i = 0; i < N; i++) {
-  for (let j = 0; j < N; j++) {
-    if (graph[i][j] === 'R') graph[i][j] = 'G';
-  }
-}
-
-let gb = 0;
-for (let i = 0; i < N; i++) {
-  for (let j = 0; j < N; j++) {
-    if (!visited[i][j]) {
-      bfs(i, j);
-      gb++;
+// 적록색약이 아닌 사람이 봤을 때
+for (let x=0; x<n; x++) {
+    for (let y=0; y<n; y++) {
+        if (!visited[x][y]) {
+            dfs([x, y], visited, maps);
+            normalCnt++;
+        }
     }
-  }
+}
+const abVisited = Array.from(Array(n), () => Array(n).fill(false));
+// 적록색약인 사람이 봤을 때
+for (let x=0; x<n; x++) {
+    for (let y=0; y<n; y++) {
+        if (!abVisited[x][y]) {
+            dfs([x, y], abVisited, abMaps);
+            abnormalCnt++;
+        }
+    }
 }
 
-console.log(rgb + ' ' + gb);
+console.log(normalCnt + ' ' + abnormalCnt);
