@@ -81,12 +81,11 @@ const bfs = () => {
         eat(fishList[0]);
     }
     
-    return fishList.length;
+    return fishList.length; // 먹을 수 있는 물고기가 있는지 여부를 확인하기 위해
 }
 
 
 while(true) {
-    const [x, y] = [sharkX, sharkY];
     const cnt = bfs();
     if (cnt === 0) break;
 }
