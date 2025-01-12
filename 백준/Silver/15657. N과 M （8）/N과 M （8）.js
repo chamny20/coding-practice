@@ -2,7 +2,6 @@ const input = require('fs').readFileSync('/dev/stdin').toString().trim().split('
 const [n, m] = input.shift().split(" ").map(Number);
 const arr = input.shift().split(' ').map(Number).sort((a,b) => a-b);
 const seq = Array(m).fill(0);
-let ans = '';
 
 const dfs = (dep, start) => {
     if (dep === m) {
