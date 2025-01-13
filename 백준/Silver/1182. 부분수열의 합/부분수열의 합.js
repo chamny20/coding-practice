@@ -8,12 +8,12 @@ const dfs = (idx, total) => {
     if (idx === n) {
         if (total === s) {
             cnt++;
-            return;
         }
-    } else {
-        dfs(idx + 1, total);
-        dfs(idx + 1, total + arr[idx]);
-    }
+        return;
+    } 
+    dfs(idx + 1, total);
+    dfs(idx + 1, total + arr[idx]);
+    
     
 }
 
