@@ -4,19 +4,19 @@ const arr = input.shift().split(' ').map(Number);
 
 let cnt = 0;
 
-const func = (idx, total) => {
+const dfs = (idx, total) => {
     if (idx === n) {
         if (total === s) {
             cnt++;
             return;
         }
     } else {
-        func(idx + 1, total);
-        func(idx + 1, total + arr[idx]);
+        dfs(idx + 1, total);
+        dfs(idx + 1, total + arr[idx]);
     }
     
 }
 
-func(0, 0);
+dfs(0, 0);
 if (s===0) cnt--;
 console.log(cnt);
