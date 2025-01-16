@@ -21,9 +21,6 @@ function solution(friends, gifts) {
         giftNum[a] += 1;
         giftNum[b] -= 1;
         
-        if (!board[a][b]) 
-            board[a][b] = 0;
-        
         board[a][b] += 1;
         
     }
