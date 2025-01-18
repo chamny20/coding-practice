@@ -1,15 +1,11 @@
 function solution(array, commands) {
-    var ans = [];
+    const result = [];
     
-   for (let l=0; l<commands.length; l++) {
-       let i = commands[l][0];
-       let j = commands[l][1];
-       let k = commands[l][2];
-       
-       let arr = array.slice(i-1, j).sort((a,b) => a-b);
-       ans.push(arr[k-1]);
-       
-   }
+    for (let i=0; i<commands.length; i++) {
+        let arr = array.slice(commands[i][0]-1, commands[i][1]);
+        arr.sort((a,b) => a-b);
+        result.push(arr[commands[i][2]-1]);
+    }
     
-    return ans;
+    return result;
 }
