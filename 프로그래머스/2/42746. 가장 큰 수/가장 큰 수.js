@@ -1,6 +1,13 @@
 function solution(numbers) {
-    let str = numbers.map((num) => String(num));
-    let arr = str.sort((a,b) => (b+a) - (a+b)).join("");
+    let arr = [];
+    numbers = numbers.map((num) => String(num));
     
-    return arr[0]==="0" ? "0" : arr;
+    numbers.sort((a, b) => {
+        const num1 = a.toString() + b.toString();
+        const num2 = b.toString() + a.toString();
+        return num1 > num2 ? -1 : 1;
+    })
+    let answer = numbers.join('');
+    
+    return Number(answer) === 0 ? '0' : answer;
 }
