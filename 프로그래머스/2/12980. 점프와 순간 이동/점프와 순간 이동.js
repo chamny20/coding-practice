@@ -1,12 +1,11 @@
-function solution(n)
-{
-    var result = 0;
-
-    while(n>=2) {
-        result += n % 2;
+function solution(n) {
+    let answer = 1;
+    
+    while (n >= 2) {
+        answer += n % 2;
         n = Math.floor(n / 2);
     }
     
-
-    return result+1;
+    
+    return answer;
 }
