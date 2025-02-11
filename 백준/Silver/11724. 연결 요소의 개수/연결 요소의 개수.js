@@ -11,12 +11,17 @@ arr.forEach(item => {
     graph[v].push(u);
 })
 
-
-const dfs = (start) => {
-    for (let i of graph[start]) {
-        if (!visited[i]) {
-            visited[i] = true;
-            dfs(i);
+const bfs = (start) => {
+    const queue = [start];
+    
+    while (queue.length) {
+        const cur = queue.shift();
+        
+        for (const v of graph[cur]) {
+            if (!visited[v]) {
+                visited[v] = true;
+                queue.push(v);
+            }
         }
     }
 }
@@ -26,7 +31,7 @@ let count = 0;
 for (let i=1; i<=n; i++) {
     if (!visited[i]) {
         count++;
-        dfs(i);
+        bfs(i);
     }
 }
 
