@@ -13,12 +13,8 @@ arr.forEach(item => {
 
 
 const dfs = (start) => {
-    if (!visited.includes(false)) {
-        return;
-    }
-    
     for (let i of graph[start]) {
-        if (visited[i] === false) {
+        if (!visited[i]) {
             visited[i] = true;
             dfs(i);
         }
@@ -28,7 +24,7 @@ const dfs = (start) => {
 let count = 0;
 
 for (let i=1; i<=n; i++) {
-    if (visited[i] === false) {
+    if (!visited[i]) {
         count++;
         dfs(i);
     }
