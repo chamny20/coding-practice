@@ -1,31 +1,30 @@
-const input = require('fs').readFileSync('/dev/stdin').toString().trim().split("\n");
+const input = require('fs').readFileSync('/dev/stdin', 'utf8').trim().split('\n');
 const n = Number(input.shift());
-const [a, b] = input.shift().split(" ").map(Number);
+const [a, b] = input.shift().split(' ').map(Number);
 const m = Number(input.shift());
+const arr = input.map(line => line.split(' ').map(Number));
+const graph = Array.from(Array(n+1), () => []);
+const visited = Array(n+1).fill(false);
 
-let graph = Array.from({length: n+1}, () => []);
-let visited = new Array(n+1).fill(false);
+arr.forEach(([u, v]) => {
+    graph[u].push(v);
+    graph[v].push(u);
+});
+
 let answer = 0;
 
-for (let i=0; i<m; i++) {
-    let [start, end] = input[i].split(" ").map(Number);
-    graph[start].push(end);
-    graph[end].push(start);
-}
-
-function dfs(start, depth) {
+const dfs = (dep, start) => {
     if (start === b) {
-        answer = depth;
+        answer = dep;
     }
     
-    for (let neighbor of graph[start]) {
+    for (const neighbor of graph[start]) {
         if (!visited[neighbor]) {
-            visited[start] = true;
-            dfs(neighbor, depth + 1);
+            visited[neighbor] = true;
+            dfs(dep + 1, neighbor);
         }
     }
 }
 
-dfs(a, 0);
-
+dfs(0, a);
 answer ? console.log(answer) : console.log(-1);
