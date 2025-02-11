@@ -9,21 +9,15 @@ arr.forEach(([u, v]) => {
     graph[v].push(u);
 });
 
-const bfs = (start) => {
-    const queue = [start];
-    
-    while (queue.length) {
-        const cur = queue.shift();
-        
-        for (const vertex of graph[cur]) {
-            if (!result[vertex]) {
-                result[vertex] = cur;
-                queue.push(vertex);
-            }
+const dfs = (node) => {
+    for (const next of graph[node]) {
+        if (!result[next]) {
+            result[next] = node;
+            dfs(next); // 재귀 호출로 다음 노드 탐색
         }
     }
 }
 
-result[1] = true;
-bfs(1);
+result[1] = 1;
+dfs(1);
 console.log(result.slice(2).join('\n'));
