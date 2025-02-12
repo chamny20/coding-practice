@@ -1,44 +1,50 @@
-const input = require('fs').readFileSync('/dev/stdin').toString().trim().split('\n');
+const input = require('fs').readFileSync('/dev/stdin', 'utf8').trim().split('\n');
 const t = Number(input.shift());
-const dir = [[1, 0], [-1, 0], [0, 1], [0, -1]];
-let result = [];
+const dir = [[1, 0], [-1, 0], [0, 1], [0, -1]]; // 상하좌우 이동
+const result = [];
 
-const dfs = (x, y, m, n, maps, visited) => {
-    visited[x][y] = true;
+const bfs = (start, visited, m, n, maps) => {
+    const queue = [start];
+    visited[start[0]][start[1]] = true;
     
-    for (let i=0; i<dir.length; i++) {
-        const nx = x + dir[i][0];
-        const ny = y + dir[i][1];
+    while (queue.length) {
+        const [curX, curY] = queue.shift();
         
-        if (nx>=0 && ny>=0 && nx<m && ny<n) {
-            if (maps[nx][ny] === 1 && !visited[nx][ny]) {
-                dfs(nx, ny, m, n, maps, visited);
+        for (let i=0; i<dir.length; i++) {
+            const nx = curX + dir[i][0];
+            const ny = curY + dir[i][1];
+            
+            if (nx>=0 && ny>=0 && nx<m && ny<n && !visited[nx][ny] && maps[nx][ny]) {
+                visited[nx][ny] = true;
+                queue.push([nx, ny])
             }
         }
     }
 }
 
 for (let i=0; i<t; i++) {
-    const [m, n, k] = input.shift().split(" ").map(Number);  
-    let maps = Array.from(Array(m), () => Array(n).fill(0));
-    let cnt = 0;
-    let visited = Array.from(Array(m), () => Array(n).fill(false));
+    const [m, n, k] = input.shift().split(' ').map(Number);
+    const maps = Array.from(Array(m), () => Array(n).fill(0));
+    const visited = Array.from(Array(m), () => Array(n).fill(false));
     
+    // 배추 위치 저장
     for (let j=0; j<k; j++) {
-        const [x, y] = input.shift().split(" ").map(Number);
+        const [x, y] = input.shift().split(' ').map(Number);
         maps[x][y] = 1;
     }
     
-    for (let x=0; x<m; x++) {
-        for (let y=0; y<n; y++) {
-            if (maps[x][y] === 1 && !visited[x][y]) {
-                dfs(x, y, m, n, maps, visited);
+    let cnt = 0;
+    for (let cx=0; cx<m; cx++) {
+        for (let cy=0; cy<n; cy++) {
+            if (!visited[cx][cy] && maps[cx][cy]) {
+                bfs([cx, cy], visited, m, n, maps);
                 cnt++;
             }
         }
     }
-    
     result.push(cnt);
+    
+
 }
 
-console.log(result.join("\n"));
+console.log(result.join('\n'));
