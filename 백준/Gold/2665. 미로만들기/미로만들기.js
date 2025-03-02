@@ -11,14 +11,14 @@ const bfs = () => {
     visited[0][0] = 0; // 시작점은 벽을 부수지 않음
 
     while (queue.length) {
-        const [x, y] = queue.shift();
+        const [curX, curY] = queue.shift();
 
-        for (let i = 0; i < 4; i++) {
-            const nx = x + dir[i][0];
-            const ny = y + dir[i][1];
+        for (let i = 0; i < dir.length; i++) {
+            const nx = curX + dir[i][0];
+            const ny = curY + dir[i][1];
 
             if (nx >= 0 && ny >= 0 && nx < n && ny < n) {
-                const newCost = visited[x][y] + (maps[nx][ny] === 0 ? 1 : 0);
+                const newCost = visited[curX][curY] + (maps[nx][ny] === 0 ? 1 : 0);
 
                 if (newCost < visited[nx][ny]) {
                     visited[nx][ny] = newCost;
