@@ -1,16 +1,19 @@
 function solution(participant, completion) {
-    let result = '';
+    const obj = {};
+    participant.forEach((name) => {
+        obj[name] = (obj[name] || 0) + 1;
+    });
     
-    participant.sort();
-    completion.sort();
-    console.log(participant, completion)
-    for (let i=0; i<participant.length; i++) {
-        if (completion[i] !== participant[i]) {
-            result = participant[i];
-            break;
-        }
-    }
+    let ans = '';
     
-    return result;
+    completion.forEach((name) => {
+        if (obj[name] && obj[name] > 0) {
+            obj[name] -= 1;
+        } 
+    })
+    
+    ans = Object.keys(obj).filter(n => obj[n] === 1).toString();
+    
+    return ans;
 }
 
