@@ -1,33 +1,30 @@
 function solution(genres, plays) {
-    let answer = [];
-    let data = [{}];
-    let songsByGenre = {}; 
-    let sumGenre = {};
+    const obj = {};
+    const sumObj = {};
+    const ans = [];
     
-    for (let i=0; i<genres.length; i++) {
-        const genre = genres[i];
-        const play = plays[i];
-        if (!sumGenre[genre]) sumGenre[genre] = 0;
-        sumGenre[genre] += play;
+    genres.forEach((genre, idx) => {
+        obj[genre] = obj[genre] || [];
+        sumObj[genre] = sumObj[genre] || 0;
+        obj[genre].push([plays[idx], idx]);
+        sumObj[genre] += plays[idx];
+    })
+    
+    // console.log(obj, sumObj);
+    let order = Object.keys(sumObj).sort((a, b) => sumObj[b] - sumObj[a]);
+    for (const key of order) {
+        let arr = obj[key].sort((a, b) => {
+            if (a[0] === b[0]) return a[1] - b[1];
+            return b[0] - a[0];
+        });
         
-        if (!songsByGenre[genre]) songsByGenre[genre] = [];
-        songsByGenre[genre].push({ index: i, play });
-    }
-    // console.log(songsByGenre);
-    const sortedGenres = Object.keys(sumGenre).sort(
-        (a, b) => sumGenre[b] - sumGenre[a]
-    );
-    
-    for (let genre of sortedGenres) {
-        let song = songsByGenre[genre];
-        song.sort((a,b) => b.play-a.play | a.index-b.index);
-        // console.log(song);
-        answer.push(song[0].index);
-        if (song.length>1)
-            answer.push(song[1].index);
+        arr.slice(0, 2).forEach(([num, idx]) => {
+            ans.push(idx);
+        })
+        // console.log(arr, ans)
     }
     
     
-    return answer;
+    return ans;
 }
 
