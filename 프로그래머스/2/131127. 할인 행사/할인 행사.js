@@ -1,37 +1,44 @@
 function solution(want, number, discount) {
-    var answer = 0;
-    let wants = {};
+    const n = discount.length;
     
-    // wants 아이템 object 만들기
-    for (let i=0; i<number.length; i++) {
-        let item = want[i];
-        wants[item] = number[i];
-    }
+    // 정현이가 원하는 거 담기
+    const obj = {};
+    want.forEach((item, idx) => {
+        obj[item] = obj[item] || 0;
+        obj[item] = number[idx];
+    });
+    // console.log("obj", obj);
     
+    let ans = 0;
     
-    for (let i=0; i<discount.length; i++) {
-        // console.log('day', i)
-        let dayItems = {};
+    for (let i=0; i<=n-10; i++) {
+        const disObj = {};
+        let isValid = true;
         
         for (let j=i; j<i+10; j++) {
-            let discountItem = discount[j];
-            // console.log(discountItem)
-            dayItems[discountItem] = (dayItems[discountItem] || 0) + 1;
+            const item = discount[j];
+            disObj[item] = disObj[item] || 0;
+            disObj[item] += 1;
         }
-        // check
-        // console.log(dayItems)
-        // console.log("wants", wants);
+        // console.log(disObj);
         
-        let isMatched = true;
-        for (let item in wants) {
-            if (dayItems[item] !== wants[item]) {
-                isMatched = false;
+        // obj랑 비교하기
+        for (const key in obj) {
+            if (obj[key] !== disObj[key]) {
+                isValid = false;
                 break;
-            }
+            } 
         }
-
-        if (isMatched) answer++;
-    }
+        if (isValid) ans++;
+        // console.log(ans)
+    }   
     
-    return answer;
+    return ans;
 }
+
+/*
+바나나 3 사과2 쌀2 돼지2 냄비 1
+14일간 할인 제품 날짜 순서 -> 치킨, 사과, 사과, 바나나, 쌀, 사과, 돼지고기, 바나나, 돼지고기, 쌀, 냄비, 바나나, 사과, 바나나
+
+
+*/
