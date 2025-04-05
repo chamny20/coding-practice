@@ -1,36 +1,31 @@
 function solution(record) {
-    var answer = [];
-    let data = {};
+    const n = record.length;
     
-    for (let i=0; i<record.length; i++) {
-        const [cmd, id, nickname] = record[i].split(" ");
+    const obj = {};
+    record.forEach((list) => {
+        const [cmd, id, name] = list.split(' ');
+        obj[id] = obj[id] || '';
+        if (name) {
+            obj[id] = name;
+        }
+    });
+    // console.log(obj);
+    const logs = [];
+    
+    for (let i=0; i<n; i++) {
+        const [cmd, id, name] = record[i].split(' ');
+        const realName = obj[id];
+        
         switch (cmd) {
             case 'Enter':
-                data[id] = nickname;
+                logs.push(`${realName}님이 들어왔습니다.`);
                 break;
             case 'Leave':
-                // delete data[id];
-                break;
-            case 'Change':
-                data[id] = nickname;
+                logs.push(`${realName}님이 나갔습니다.`);
                 break;
         }
     }
     
-    for (let i=0; i<record.length; i++) {
-        const [cmd, id, nickname] = record[i].split(" ");
-        switch (cmd) {
-            case 'Enter':
-                answer.push(`${data[id]}님이 들어왔습니다.`);
-                break;
-            case 'Leave':
-                answer.push(`${data[id]}님이 나갔습니다.`);
-                break;
-            case 'Change':
-                break;
-        }
-    }
-    
-    
-    return answer;
+    // console.log(logs);
+    return logs;
 }
