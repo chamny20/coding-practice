@@ -1,17 +1,14 @@
 function solution(s){
-    let stack = [];
+    const stack = [];
     
     for (let i=0; i<s.length; i++) {
-        if (s[i] === '(') {
-            stack.push(1);
-        } else if (s[i] === ')') {
-            if (stack.length > 0)
-                stack.pop();
-            else
-                return false;
+        const str = s[i];
+        
+        if (str === ')') {
+            if (stack.pop() !== '(') return false; 
+        } else {
+            stack.push(str);
         }
     }
-    
-    
-    return stack.length === 0;
+    return stack.length > 0 ? false : true;
 }
