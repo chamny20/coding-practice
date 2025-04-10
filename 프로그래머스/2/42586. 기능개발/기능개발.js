@@ -20,9 +20,7 @@ function solution(progresses, speeds) {
         }
     }
     
-    ans.push(cnt)
-    
-    
+    ans.push(cnt);
     
     return ans;
 }
