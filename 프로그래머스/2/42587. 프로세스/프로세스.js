@@ -1,25 +1,22 @@
 function solution(priorities, location) {
-    var answer = 0;
-    let maxVal = Math.max(...priorities);
-    let arr = [];
+    const n = priorities.length;
+    const arr = Array.from(Array(n), (_, idx) => idx);
     
-    for(let i = 0; i < priorities.length; i++){
-        arr.push(i);
-    }
+    let max = priorities[0];
+    let ans = 0;
     
-    while(priorities.length !== 0) {
-        maxVal = Math.max(...priorities);
-
-        if (priorities[0] < maxVal) {
+    while (priorities.length) {
+        max = Math.max(...priorities);
+        
+        if (max > priorities[0]) {
             priorities.push(priorities.shift());
             arr.push(arr.shift());
         } else {
-            answer++;
+            ans++;
             priorities.shift();
             if (arr.shift() === location)
-                return answer;
+                return ans;
         }
     }
-    
-    return answer;
+    return ans;
 }
