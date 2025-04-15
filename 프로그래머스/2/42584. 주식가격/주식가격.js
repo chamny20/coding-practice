@@ -1,18 +1,21 @@
 function solution(prices) {
-    let result = [];
+    const ans = [];
     
-    for (let i=0; i<prices.length; i++) {
+    for (let i=0; i<prices.length - 1; i++) {
+        const price = prices[i];
         let cnt = 0;
-        
         for (let j=i+1; j<prices.length; j++) {
-            cnt++;
-            if (prices[i] > prices[j]) {
+            if (price <= prices[j]) {
+                cnt++;
+            } else {
+                cnt += 1;
                 break;
             }
-            // console.log(prices[i], prices[j], cnt);
         }
-        result.push(cnt);
+        ans.push(cnt);
+        // console.log(ans)
     }
-
-    return result;
+    ans.push(0);
+    
+    return ans;
 }
