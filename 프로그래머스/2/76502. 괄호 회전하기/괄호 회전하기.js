@@ -1,30 +1,34 @@
 function solution(s) {
-    var answer = 0;
-    let arr = s.split("");
-    
-    for (let i=0; i<arr.length; i++) {
-        if(i!==0) {
-            arr.push(arr.shift());
+    let ans = 0;
+    const n = s.length;
+    const stack = s.split('');
+
+    for (let i=0; i<n; i++) {
+        const temp = [];
+        // console.log('stack', stack);
+        for (let j=0; j<n; j++) {
+            // console.log(temp)
+            if (temp.length) {
+                if (stack[j] === ']' && temp[temp.length - 1] === '[') {
+                    temp.pop();
+                } else if (stack[j] === '}' && temp[temp.length - 1] === '{') {
+                    temp.pop();
+                } else if (stack[j] === ')' && temp[temp.length - 1] === '(') {
+                    temp.pop();
+                } else {
+                    temp.push(stack[j]);
+                }
+                continue;
+            }
+            
+            temp.push(stack[j]);
         }
         
-        let stack = [];
-        console.log(arr);
-          // 짝 맞는지 로직 체크
-        for (let i=0; i<arr.length; i++) {
-            if (arr[i] === '['|| arr[i] === '(' || arr[i] === '{') {
-                stack.push(arr[i]);
-            } else {
-                if (stack.length > 0)
-                    stack.pop();
-                else
-                    return false;
-            }
-        }
-        if (stack.length===0) answer++;
+        if (temp.length === 0) 
+            ans++;
+        
+        stack.push(stack.shift());
     }
     
-    
-  
-    
-    return answer;
+    return ans;
 }
