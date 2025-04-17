@@ -1,23 +1,24 @@
-const input = require('fs').readFileSync('/dev/stdin').toString().trim().split('\n');
-const testCnt = Number(input.shift()); // 테스트 케이스의 수
-const dir = [[1, 2], [1, -2], [2, 1], [2, -1], [-1, 2], [-1, -2], [-2, 1], [-2, -1]];
-let ans = [];
+const input = require('fs').readFileSync('/dev/stdin', 'utf8').trim().split('\n');
+const t = Number(input.shift());
+const dir = [[2, 1], [-2, 1], [-2, -1], [2, -1], [1, 2], [1, -2], [-1, -2], [-1, 2]];
 
 const bfs = (start, target, visited, n) => {
-    const queue = [start];
+    const [x, y] = start;
+    const queue = [[x, y, 0]];
     visited[start[0]][start[1]] = true;
+    const [tx, ty] = target;
     
     while (queue.length) {
-        const [curX, curY, distance] = queue.shift();
+        const [curX, curY, cnt] = queue.shift();
         
-        if (curX === target[0] && curY === target[1]) return distance;
+        if (curX === tx && curY === ty) return cnt;
         
         for (let i=0; i<dir.length; i++) {
             const nx = curX + dir[i][0];
             const ny = curY + dir[i][1];
             
             if (nx>=0 && ny>=0 && nx<n && ny<n && !visited[nx][ny]) {
-                queue.push([nx, ny, distance+1]);
+                queue.push([nx, ny, cnt+1]);
                 visited[nx][ny] = true;
             }
         }
@@ -25,25 +26,15 @@ const bfs = (start, target, visited, n) => {
     return -1;
 }
 
-for (let i=0; i<input.length; i+=3) {
-    const n = Number(input[i]);
-    let distance = 0;
-    const start = input[i+1].split(" ").map(Number);
-    start.push(distance);
-    const target = input[i+2].split(" ").map(Number);
+const ans = [];
+for (let i=0; i<t; i++) {
+    const n = Number(input.shift());
+    const [x, y] = input.shift().split(' ').map(Number);
+    const [tx, ty] = input.shift().split(' ').map(Number);
     const visited = Array.from(Array(n), () => Array(n).fill(false));
     
-    ans.push(bfs(start, target, visited, n));
+    let cnt = bfs([x, y], [tx, ty], visited, n);
+    ans.push(cnt);
 }
 
-
-
 console.log(ans.join("\n"));
-
-
-
-
-
-
-
-
