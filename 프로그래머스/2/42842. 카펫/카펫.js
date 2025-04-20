@@ -1,16 +1,19 @@
 function solution(brown, yellow) {
-    var answer = [];
-    // x + y = (brown + 4) / 2
-    // xy = brown * yellow
-    let total = brown + yellow;
+    let ans = [0, 0];
+    const area = brown + yellow;
     
-    for (let vertical=3; vertical<=Math.sqrt(total); vertical++) {
-        if (total % vertical === 0) {
-            const width = total / vertical;
-            if (brown === (width + (total / width)) * 2 - 4) 
-                answer = [width, total/width];
+    for (let h=3; h<=Math.sqrt(area); h++) {
+        if (area % h === 0) {
+            const w = area / h;
+            
+            const innerW = w - 2;
+            const innerH = h - 2;
+            
+            if (innerW * innerH === yellow) {
+                ans = [w, h];
+            }
         }
     }
     
-    return answer;
+    return ans;
 }
