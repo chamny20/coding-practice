@@ -1,21 +1,23 @@
 function solution(n, computers) {
-    let answer = 0;
-    const visited = new Array(n).fill(false);
-    
     const graph = {};
-    // 양방향 그래프 생성
+    
     for (let i=0; i<n; i++) {
-        graph[i] = [];
+        graph[i] = graph[i] || [];
+        
         for (let j=0; j<n; j++) {
-            if (i!==j && computers[i][j]===1) 
+            if (computers[i][j] && i !== j) {
                 graph[i].push(j);
+            }
         }
     }
+
+    let cnt = 0;
+    const visited = Array(n).fill(false);
     
     const dfs = (idx, visited) => {
         visited[idx] = true;
         
-        for (let neighbor of graph[idx]) {
+        for (const neighbor of graph[idx]) {
             if (!visited[neighbor]) {
                 dfs(neighbor, visited);
             }
@@ -25,10 +27,9 @@ function solution(n, computers) {
     for (let i=0; i<n; i++) {
         if (!visited[i]) {
             dfs(i, visited);
-            answer++;
+            cnt++;
         }
     }
     
-    
-    return answer;
+    return cnt;
 }
