@@ -1,16 +1,18 @@
 function solution(s) {
-    const result = [0, 0];
+    let ans = 0;
+    let str = s;
     let cnt = 0;
     
-    while (s !== '1') {
-        s = s.split('');
-        result[0]++;
-        const fiteredLen = s.filter(el => el === '0').length;
-        result[1] += fiteredLen;
-        let len = s.length - fiteredLen;
-        s = len.toString(2);
+    while (str !== '1') {
+        const len = str.length;
+        let arr = str.split('0');
+        const afterLen = arr.join('').length;
+        
+        ans += len - afterLen;
+        str = afterLen.toString(2);
+        cnt++;
     }
     
-    return result;
+    return [cnt, ans];
 }
 
