@@ -1,26 +1,26 @@
 function solution(progresses, speeds) {
-    let ans = [];
-    let remainArr = [];
+    const arr = [];
     
     for (let i=0; i<progresses.length; i++) {
-        let remain = Math.ceil((100 - progresses[i] ) / speeds[i]);
-        remainArr.push(remain);
+        const remain = 100 - progresses[i];
+        let val = Math.ceil(remain / speeds[i]);
+        arr.push(val);
     }
     
-    let currentMax = remainArr[0]; // 현재 가장 앞에 있는 작업의 배포 기준 일 수
+    const result = [];
+    let maxDay = arr[0];
     let cnt = 1;
-    
-    for (let i = 1; i < remainArr.length; i++) {
-        if (remainArr[i] <= currentMax) {
-            cnt++;
-        } else {
-            ans.push(cnt);
+
+    for (let i=1; i<arr.length; i++) {
+        if (maxDay < arr[i]) {
+            maxDay = arr[i];
+            result.push(cnt);
             cnt = 1;
-            currentMax = remainArr[i]; 
+        } else {
+            cnt++;
         }
     }
+    result.push(cnt);
     
-    ans.push(cnt);
-    
-    return ans;
+    return result;
 }
