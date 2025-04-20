@@ -1,24 +1,22 @@
 function solution(tickets) {
-    var answer = [];
-    let visited = new Array(tickets.length).fill(false);
+    const visited = Array(tickets.length).fill(false);
+    const ans = [];
     
-    function dfs(routes) {
-        if (routes.length === tickets.length + 1)
-            answer.push(routes);
+    const dfs = (arr) => {
+        if (arr.length === tickets.length + 1) 
+            ans.push(arr);
         
-        for (let idx in tickets) {
-            const [start, end] = tickets[idx];
-            if (!visited[idx] && routes.at(-1) === start) {
-                visited[idx] = true;
-                dfs([...routes, end]);
-                visited[idx] = false;
-                
+        for (let i=0; i<tickets.length; i++) {
+            const [start, end] = tickets[i];
+            
+            if (!visited[i] && arr.at(-1) === start) {
+                visited[i] = true;
+                dfs([...arr, end]);
+                visited[i] = false;
             }
         }
-        
     }
+    dfs(['ICN']);
     
-    dfs(["ICN"]);
-    
-    return answer.sort()[0];
+    return ans.sort()[0];
 }
