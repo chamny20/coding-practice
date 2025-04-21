@@ -1,27 +1,23 @@
-function solution(n, lost, reserve) {
-    const arr = Array.from(Array(n), (_, idx) => idx + 1);
-    console.log(arr);
-    reserve.sort((a, b) => a-b);
-    
-    // lost
-    lost.forEach(num => {
-        if (reserve.includes(num)) {
-            reserve.splice(reserve.indexOf(num), 1);
-        } else {
-            arr[num - 1] = 0;
-        }
+function solution(n, lost, reserve) {    
+    const arr = Array(n).fill(1);
+    lost.forEach((num, idx) => {
+        arr[num-1] = 0;
+    });
+    reserve.forEach((num, idx) => {
+        arr[num-1]++;
     });
     
-    for (let i=0; i<reserve.length; i++) {
-        const num = reserve[i];
-        // console.log('num', num)
-        // console.log(arr[num-2])
+    for (let i=0; i<arr.length; i++) {
+        if (arr[i] === 0) {
+            if (i>0 && arr[i-1] > 1) {
+                arr[i] = 1;
+                arr[i-1]--;
+            } else if (i<n && arr[i+1] > 1) {
+                arr[i] = 1;
+                arr[i+1]--;
+            }
+        }
         
-        if (num > 1 && arr[num - 2] === 0) 
-            arr[num - 2] = num;
-        else if (num < n && arr[num] === 0) 
-            arr[num] = num;
     }
-    
-    return arr.filter(n => n !== 0).length;
+    return arr.filter(num => num > 0).length;
 }
