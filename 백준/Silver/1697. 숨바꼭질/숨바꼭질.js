@@ -7,16 +7,16 @@ const bfs = (start, end) => {
     visited[start] = true;
     
     while (queue.length) {
-        const [cur, t] = queue.shift();
-        if (cur === end) return t;
+        const [cur, time] = queue.shift();
+        if (cur === end) return time;
         
-        for (const nx of [cur-1, cur+1, cur*2]) {
-            if (!visited[nx] && nx>=0 && nx< visited.length) {
-                queue.push([nx, t + 1]);
-                visited[nx] = true;
+        for (const d of [cur + 1, cur * 2, cur - 1]) {
+            if (!visited[d] && d >= 0 && d < visited.length) {
+                queue.push([d, time + 1]);
+                visited[d] = true;
             }
         }
-    }
+    } 
 }
 
 console.log(bfs(n, k));
