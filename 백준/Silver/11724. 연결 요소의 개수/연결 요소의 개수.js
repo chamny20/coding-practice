@@ -1,38 +1,31 @@
 const input = require('fs').readFileSync('/dev/stdin', 'utf8').trim().split('\n');
 const [n, m] = input.shift().split(' ').map(Number);
-const arr = input.map(line => line.split(' ').map(Number));
+const graph = Array.from(Array(n+1), () => []);
 
-const graph = Array.from(Array(n + 1), () => []);
-const visited = Array.from(Array(n + 1), () => false);
-
-arr.forEach(item => {
-    const [u, v] = item;
+for (let i=0; i<m; i++) {
+    const [u, v] = input[i].split(' ').map(Number);
+    
     graph[u].push(v);
     graph[v].push(u);
-})
+}
 
-const bfs = (start) => {
-    const queue = [start];
+const visited = Array(n+1).fill(false);
+
+const dfs = (start) => {
+    const neighbors = graph[start];
+    visited[start] = true;
     
-    while (queue.length) {
-        const cur = queue.shift();
-        
-        for (const v of graph[cur]) {
-            if (!visited[v]) {
-                visited[v] = true;
-                queue.push(v);
-            }
-        }
+    for (const neighbor of neighbors) {
+        if (!visited[neighbor])
+            dfs(neighbor);
     }
 }
 
-let count = 0;
-
+let cnt = 0;
 for (let i=1; i<=n; i++) {
     if (!visited[i]) {
-        count++;
-        bfs(i);
+        dfs(i);
+        cnt++;
     }
 }
-
-console.log(count);
+console.log(cnt);
