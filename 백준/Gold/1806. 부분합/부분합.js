@@ -7,14 +7,15 @@ let min = Infinity;
 
 let left = 0;
 let right = 0;
-let sum = 0;
+let sum = arr[0];
 
-while (right <= n) {
+while (left <= right && right < n) {
     if (sum >= s) {
-        min = Math.min(min, right - left);
+        min = Math.min(min, right - left + 1);
         sum -= arr[left++];
     } else {
-        sum += arr[right++];
+        right++;
+        sum += arr[right];
     }
     
 }
