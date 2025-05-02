@@ -1,12 +1,11 @@
 function solution(citations) {
-    let ans = 0;
+    const n = citations.length;
+    citations.sort((a, b) => b - a);
     
-    citations.sort((a,b) => b-a);
-    // [6, 5, 3, 1, 0]
-    for (let i=0; i<citations.length; i++) {
+    let ans = 0;
+    for (let i=0; i<n; i++) {
         if (i < citations[i])
             ans++;
     }
-    
     return ans;
 }
