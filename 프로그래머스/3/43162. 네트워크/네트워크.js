@@ -1,23 +1,23 @@
 function solution(n, computers) {
     const graph = {};
     
-    for (let i=0; i<n; i++) {
-        graph[i] = graph[i] || [];
+    computers.forEach((computer, idx) => {
+        graph[idx] = graph[idx] || [];
         
-        for (let j=0; j<n; j++) {
-            if (computers[i][j] && i !== j) {
-                graph[i].push(j);
+        for (let i=0; i<computer.length; i++) {
+            if (idx !== i && computer[i]) {
+                graph[idx].push(i);
             }
         }
-    }
-
+    });
+    
     let cnt = 0;
     const visited = Array(n).fill(false);
     
-    const dfs = (idx, visited) => {
-        visited[idx] = true;
+    const dfs = (start, visited) => {
+        visited[start] = true;
         
-        for (const neighbor of graph[idx]) {
+        for (const neighbor of graph[start]) {
             if (!visited[neighbor]) {
                 dfs(neighbor, visited);
             }
