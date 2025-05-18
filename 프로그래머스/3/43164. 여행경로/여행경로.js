@@ -1,22 +1,29 @@
 function solution(tickets) {
-    const visited = Array(tickets.length).fill(false);
-    const ans = [];
+    tickets.sort();
+    
+    const n = tickets.length;
+    const visited = Array(n).fill(false);
     
     const dfs = (arr) => {
-        if (arr.length === tickets.length + 1) 
-            ans.push(arr);
-        
-        for (let i=0; i<tickets.length; i++) {
+        if (arr.length === n + 1) {
+            return arr;
+        }
+
+        for (let i=0; i<n; i++) {
             const [start, end] = tickets[i];
             
-            if (!visited[i] && arr.at(-1) === start) {
+            if (!visited[i] && arr[arr.length - 1] === start) {
                 visited[i] = true;
-                dfs([...arr, end]);
+                const result = dfs([...arr, end]);
                 visited[i] = false;
+                
+                if (result) return result;
             }
         }
+        return null;
     }
-    dfs(['ICN']);
     
-    return ans.sort()[0];
+    const ans = dfs(['ICN']);
+    
+    return ans;
 }
