@@ -8,15 +8,17 @@ function solution(k, dungeons) {
         
         for (let i=0; i<n; i++) {
             const [a, b] = dungeons[i];
-
-            if (!visited[i] && cur >= a) {
+            
+            if (cur < a) continue;
+            
+            if(!visited[i]) {
                 visited[i] = true;
                 dfs(cur - b, cnt + 1);
                 visited[i] = false;
             }
         }
     }
-
+    
     dfs(k, 0);
     
     return ans;
