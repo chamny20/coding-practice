@@ -1,21 +1,18 @@
 function solution(sizes) {
-    sizes.forEach(list => list.sort((a, b) => a - b));
+    sizes.forEach((size) => {
+        size.sort((a, b) => a - b);
+    });
     console.log(sizes);
     
-    let min = sizes[0][0];
-    let max = sizes[0][1];
+    let maxW = sizes[0][0];
+    let maxH = sizes[0][1];
     
-    for (let i=1; i<sizes.length; i++) {
-        const [a, b] = sizes[i];
+    sizes.forEach((size) => {
+        const [a, b] = size;
         
-        if (max < b) {
-            max = b;
-        }
-        
-        if (min < a) {
-            min = a;
-        }
-    }
+        maxW = Math.max(maxW, a);
+        maxH = Math.max(maxH, b);
+    });
     
-    return min * max;
+    return maxW * maxH;
 }
