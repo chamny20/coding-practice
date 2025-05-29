@@ -1,44 +1,43 @@
 function solution(n, wires) {    
-    let result = [];
-    
-    // 양방향 그래프 생성
     const graph = {};
-    wires.forEach(([u, v]) => {
-        if (!graph[u]) graph[u] = [];
-        if (!graph[v]) graph[v] = [];
-        graph[u].push(v);
-        graph[v].push(u);
-    });
-    // console.log(graph);
+    wires.forEach((wire) => {
+        const [a, b] = wire;
+        graph[a] = graph[a] || [];
+        graph[b] = graph[b] || [];
+        graph[a].push(b);
+        graph[b].push(a);
+    })
+    console.log(graph);
     
     const dfs = (node, visited) => {
-        let netSize = 1; // 현재 노드 하나 추가
+        let cnt = 1;
         visited[node] = true;
         
         for (const neighbor of graph[node]) {
             if (!visited[neighbor]) {
-                netSize += dfs(neighbor, visited);
+                cnt += dfs(neighbor, visited);
+                
             }
         }
-        return netSize;
+        return cnt;
     }
     
-    for (let [u, v] of wires) {
-        // 전선 제거하기
+    const result = [];
+    
+    for (const [u, v] of wires) {
+        // 전선 제거
         graph[u] = graph[u].filter((node) => node !== v);
         graph[v] = graph[v].filter((node) => node !== u);
         
-        const visited = new Array(n).fill(false);
+        const visited = Array(n).fill(false);
+        const netSize = dfs(u, visited);
+        const otherNetSize = n - netSize;
         
-        let networkSize = dfs(u, visited);
-        let otherNetworkSize = n - networkSize;
+        result.push(Math.abs(netSize - otherNetSize));
         
-        result.push(Math.abs(networkSize - otherNetworkSize));
-        
-        // 전선 복구
+        // 복구
         graph[u].push(v);
         graph[v].push(u);
     }
-    
-    return Math.min(...result);
+    return Math.min(...result)
 }
