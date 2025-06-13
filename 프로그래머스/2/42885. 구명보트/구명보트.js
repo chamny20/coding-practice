@@ -1,17 +1,19 @@
 function solution(people, limit) {
-    var answer = 0;
+    let ans = 0;
+    
     people.sort((a, b) => a - b);
     
     while (people.length > 0) {
         if (people[0] + people.at(-1) <= limit) {
             people.shift();
             people.pop();
-            answer++;
+            ans++;
         } else {
             people.pop();
-            answer++;
+            ans++;
         }
+        
     }
     
-    return answer;
+    return ans;
 }
