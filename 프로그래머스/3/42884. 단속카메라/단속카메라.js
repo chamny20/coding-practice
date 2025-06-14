@@ -1,17 +1,16 @@
 function solution(routes) {
-    var answer = 1;
+    let ans = 1;
     routes.sort((a, b) => a[1] - b[1]);
-    console.log(routes);
-    let checkPoint = routes[0][1];
+    let cameraPoint = routes[0][1];
     
-    for (let i=1; i<routes.length; i++) {
-        const [start, end] = routes[i];
+    for (let i=0; i<routes.length; i++) {
+        let [start, end] = routes[i];
         
-        if (checkPoint < start) {
-            answer++;
-            checkPoint = end;
+        if (cameraPoint < start) {
+            cameraPoint = end;
+            ans++;
         }
     }
     
-    return answer;
+    return ans;
 }
