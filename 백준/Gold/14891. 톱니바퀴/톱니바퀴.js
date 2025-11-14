@@ -1,68 +1,61 @@
 const input = require('fs').readFileSync('/dev/stdin').toString().trim().split("\n");
-
 const A = input.shift().split('').map(Number);
 const B = input.shift().split('').map(Number);
 const C = input.shift().split('').map(Number);
 const D = input.shift().split('').map(Number);
 
-const gears = [A, B, C, D]; // 4개의 톱니 저장
+const gears = [A, B, C, D];
 
-// 회전방향대로 변경하는 함수
-const rotateGear = (arr, dir) => {
-    if (dir === 1) {
-        const popItem = arr.pop();
-        arr.unshift(popItem);
+const k = Number(input.shift());
+
+const rotate = (arr, dir) => {
+    // 시계방향
+    if (dir === 1) { 
+        arr.unshift(arr.pop());
     } else if (dir === -1) {
-        const shiftItem = arr.shift();
-        arr.push(shiftItem);
+        arr.push(arr.shift());
     }
+    return arr;
 }
 
-
-const k = Number(input.shift()); // 회전 횟수
-for (let t=0; t<k; t++) {
-    const [idx, direction] = input[t].split(' ').map(Number);
-    // A[2]랑B[6] - B[2]랑C[6] - C[2]랑 D[6]
-    const dirs = [0, 0, 0, 0];
-    dirs[idx - 1] = direction;
+for (let i=0; i<k; i++) {
+    const [num, dir] = input[i].split(' ').map(Number);
+    const n = num - 1;
+    const direction = [0, 0, 0, 0];
+    direction[n] = dir;
     
-    // left
-    for (let i=idx-1; i>0; i--) {
-        if (gears[i][6] !== gears[i-1][2]) {
-            dirs[i-1] = -dirs[i];
-        } else 
+    for (let a=n; a>0; a--) {
+        if (gears[a-1][2] !== gears[a][6])
+            direction[a-1] = direction[a] * (-1);
+        else 
             break;
     }
-    
-    // right
-    for (let i=idx-1; i<3; i++) {
-        if (gears[i][2] !== gears[i+1][6]) {
-            dirs[i+1] = -dirs[i];
+            
+    for (let b=n; b<3; b++) {
+        if (gears[b][2] !== gears[b+1][6]) {
+            direction[b+1] = direction[b] * (-1);
         } else
             break;
     }
-   
-    // rotate
-    for (let i=0; i<4; i++) {
-        if (dirs[i] !== 0) 
-            rotateGear(gears[i], dirs[i]);
+    
+    for (let c=0; c<4; c++) {
+        if (direction[c]!==0) {
+            rotate(gears[c], direction[c]);
+        }
     }
 }
 
-
-
-
 // 점수계산
-function calFunc(A, B, C, D) {
-    let ans = 0;
+const getScore = (A, B, C, D) => {
+    let score = 0;
+
+    if (A[0] === 1) score++;
+    if (B[0] === 1) score += 2;
+    if (C[0] === 1) score += 4;
+    if (D[0] === 1) score += 8;
     
-    ans += (A[0] === 0 ? 0 : 1);
-    ans += (B[0] === 0 ? 0 : 2);
-    ans += (C[0] === 0 ? 0 : 4);
-    ans += (D[0] === 0 ? 0 : 8);
-    
-    return ans;
+    return score;
 }
 
-const res = calFunc(gears[0], gears[1], gears[2], gears[3]);
-console.log(res);
+const ans = getScore(gears[0], gears[1], gears[2], gears[3]);
+console.log(ans);
