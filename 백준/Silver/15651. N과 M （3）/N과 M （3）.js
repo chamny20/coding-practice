@@ -1,19 +1,23 @@
-const input = require('fs').readFileSync('/dev/stdin').toString().trim().split('\n');
-const [n, m] = input.shift().split(" ").map(Number);
-const seq = Array(m).fill(0);
-let ans = '';
+const input = require('fs').readFileSync('/dev/stdin').toString().trim().split("\n");
+const [n, m] = input.shift().split(' ').map(Number);
+
+let result = '';
+const arr = [];
 
 const dfs = (dep) => {
     if (dep === m) {
-        ans += `${seq.join(' ')}\n`;
+        result += arr.join(' ') + '\n';
         return;
     }
     
-    for (let i=1; i<=n; i++) {
-        seq[dep] = i;
-        dfs(dep + 1);
+    for (let i=0; i<n; i++) {
+        arr.push(i+1);
+        dfs(dep+1);
+        arr.pop();
     }
+    
 }
 
 dfs(0);
-console.log(ans);
+console.log(result);
+
