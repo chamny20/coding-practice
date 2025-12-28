@@ -1,6 +1,6 @@
-const input = require('fs').readFileSync('/dev/stdin').toString().trim().split('\n');
+const input = require('fs').readFileSync('/dev/stdin').toString().trim().split("\n");
 const [n, m] = input.shift().split(' ').map(Number);
-// 1 ~ n -> 중복없이 m개 고른 수열
+
 const visited = Array(n).fill(false);
 const arr = [];
 
@@ -23,6 +23,5 @@ const dfs = (idx) => {
         }
     }
 }
-
 
 dfs(0);
