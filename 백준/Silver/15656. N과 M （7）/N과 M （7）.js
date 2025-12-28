@@ -14,7 +14,7 @@ const dfs = (dep) => {
     
     for (let i=0; i<n; i++) {
         arr.push(numArr[i]);
-        dfs(i+1);
+        dfs(dep+1);
         arr.pop();
     }
 }
