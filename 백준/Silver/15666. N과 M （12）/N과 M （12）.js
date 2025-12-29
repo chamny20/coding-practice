@@ -1,19 +1,23 @@
-const input = require('fs').readFileSync('/dev/stdin').toString().trim().split('\n');
+const input = require('fs').readFileSync('/dev/stdin').toString().trim().split("\n");
 const [n, m] = input.shift().split(' ').map(Number);
-const arr = input.shift().split(' ').map(Number).sort((a,b) => a-b);
-const seq = Array(m).fill(0);
-const ans = new Set();
+const numArr = input.shift().split(' ').map(Number);
 
-const dfs = (dep, start) => {
-    if (dep === m) {
-        ans.add(seq.join(' '));
+numArr.sort((a, b) => a - b);
+const arr = [];
+const res = new Set();
+
+const dfs = (dep) => {
+    if (arr.length === m) {
+        res.add(arr.join(' '));
         return;
     }
-    for (let i=start; i<n; i++) {
-        seq[dep] = arr[i];
-        dfs(dep+1, i);
+    
+    for (let i=dep; i<n; i++) {
+        arr.push(numArr[i]);
+        dfs(i);
+        arr.pop();
     }
 }
 
-dfs(0, 0);
-console.log([...ans].join('\n'));
+dfs(0);
+console.log([...res].join('\n'));
