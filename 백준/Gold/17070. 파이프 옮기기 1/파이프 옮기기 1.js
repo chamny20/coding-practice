@@ -19,15 +19,15 @@ for (let i=1; i<n; i++) {
         }
         
         // 가로
-        if (!maps[i][j]) {
+        if (!maps[i][j] && !maps[i][j-1]) {
             dp[i][j][0] = dp[i][j-1][0] + dp[i][j-1][2];
         }
         // 세로
-        if (!maps[i][j]) {
+        if (!maps[i][j] && !maps[i-1][j]) {
             dp[i][j][1] = dp[i-1][j][1] + dp[i-1][j][2];
         }
         // 대각선
-        if (!maps[i][j] && !maps[i][j-1] && !maps[i-1][j])
+        if (!maps[i][j] && !maps[i][j-1] && !maps[i-1][j] && !maps[i-1][j-1])
             dp[i][j][2] = dp[i-1][j-1][0] + dp[i-1][j-1][1] + dp[i-1][j-1][2];
     } 
 }
