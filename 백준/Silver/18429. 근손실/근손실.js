@@ -7,8 +7,8 @@ let ans = 0;
 const dfs = (idx, val, visited) => {
     visited[idx] = true;
     
-    const diff = val + (arr[idx] - k);
-    if (diff < 500) return;
+    //const diff = val + (arr[idx] - k);
+    //if (diff < 500) return;
     
     const isFinished = visited.every(i => i === true);
     if (isFinished) {
@@ -19,8 +19,8 @@ const dfs = (idx, val, visited) => {
     
     for (let i=0; i<n; i++) {
         if (!visited[i]) {
-            //const diff = val + (arr[i] - k);
-            //if (diff < 500) return;
+            const diff = val + (arr[i] - k);
+            if (diff < 500) continue;
             
             visited[i] = true;
             dfs(i, diff, visited);
