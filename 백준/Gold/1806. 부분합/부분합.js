@@ -1,24 +1,31 @@
-const input = require('fs').readFileSync('/dev/stdin', 'utf8').trim().split('\n');
+const input = require('fs').readFileSync('/dev/stdin').toString().trim().split("\n");
 const [n, s] = input.shift().split(' ').map(Number);
 const arr = input.shift().split(' ').map(Number);
 
-// 연속된 수들 부분합 중에 그 합이 s 이상이 되는 것 중 가장 짧은 길이 구하기
-let min = Infinity;
-
+// n개
+// 연속된 수들 중 부분합이 s이상이 되도록
 let left = 0;
 let right = 0;
 let sum = arr[0];
 
-while (left <= right && right < n) {
-    if (sum >= s) {
-        min = Math.min(min, right - left + 1);
-        sum -= arr[left++];
-    } else {
+let ans = Infinity;
+
+
+while (right < n) {
+
+    if (sum < s) {
         right++;
         sum += arr[right];
+    } else {
+        const cnt = right - left + 1;
+
+        ans = Math.min(ans, cnt);
+        sum -= arr[left];
+        left++;
     }
-    
+        
 }
 
-let ans = min === Infinity ? 0 : min;
-console.log(ans);
+
+
+console.log(ans === Infinity ? 0 : ans);
