@@ -1,92 +1,91 @@
-const input = require('fs').readFileSync('/dev/stdin', 'utf8').trim().split('\n');
+const input = require('fs').readFileSync('/dev/stdin').toString().trim().split("\n");
+const dirs = [[1, 0], [-1, 0], [0, 1], [0, -1]];
 const [n, m] = input.shift().split(' ').map(Number);
-const arr = input.map(line => line.split(' ').map(Number));
-const dir = [[1, 0], [-1, 0], [0, 1], [0, -1]];
+let maps = input.map(line => line.split(' ').map(Number));
 
-// 빙산 녹이는 함수
-const meltIceberg = () => {
-    const melt = Array.from(Array(n), () => Array(m).fill(0));
-    
-    for (let x=0; x<n; x++) {
-        for (let y=0; y<m; y++) {
-            if (arr[x][y] > 0) {
-                for (let i=0; i<dir.length; i++) {
-                    const nx = x + dir[i][0];
-                    const ny = y + dir[i][1];
-                    
-                    if (nx>=0 && ny>=0 && nx<n && ny<m && !arr[nx][ny]) {
-                        melt[x][y]++; // 사방의 0 개수 세어서 melt[x][y]에 저장
-                    }
-                }
-            }
+// 개별 녹이기
+const meltingCnt = (pos) => {
+    const [x, y] = pos;
+    let cnt = 0;
+    for (let i=0; i<dirs.length; i++) {
+        const nx = x + dirs[i][0];
+        const ny = y + dirs[i][1];
+        if (nx>=0 && ny>=0 && nx<n && ny<m && maps[nx][ny]===0) {
+            cnt++;
         }
     }
-    
-    let isIceberg = false;
-    
-    for (let x=0; x<n; x++) {
-        for (let y=0; y<m; y++) {
-            arr[x][y] = Math.max(0, arr[x][y] - melt[x][y]);
-            if (arr[x][y] > 0)
-                isIceberg = true;
-        }
-    }
-    
-    return isIceberg;
+    return cnt;
 }
 
-// 빙산 덩어리 개수를 세는 BFS 함수
-const countIceberg = () => {
-    const visited = Array.from(Array(n), () => Array(m).fill(false));
-    let cnt = 0;
-    
-    const bfs = (start) => {
-        const queue = [start];
-        visited[start[0]][start[1]] = true;
-        
-        while (queue.length) {
-            const [curX, curY] = queue.shift();
-            
-            for (let i=0; i<dir.length; i++) {
-                const nx = curX + dir[i][0];
-                const ny = curY + dir[i][1];
-                
-                if (nx>=0 && ny>=0 && nx<n && ny<m && arr[nx][ny]>0 && !visited[nx][ny]) {
-                    visited[nx][ny] = true;
-                    queue.push([nx, ny]);
-                }
+const melt = () => {
+    const nextMaps = Array.from(Array(n), () => Array(m).fill(0));
+    for (let i=0; i<n; i++) {
+        for (let j=0; j<m; j++) {
+            if (maps[i][j] > 0) {
+                const cnt = meltingCnt([i, j]);
+                nextMaps[i][j] = Math.max(0, maps[i][j] - cnt);
             }
         }
     }
     
     
-    for (let x=0; x<n; x++) {
-        for (let y=0; y<m; y++) {
-            if (arr[x][y] > 0 && !visited[x][y]) {
+    return nextMaps;
+}
+
+const bfs = (start, visited) => {
+    const [x, y] = start;
+    const queue = [[x, y]];
+    visited[x][y] = true;
+    
+    while (queue.length) {
+        const [curX, curY] = queue.shift();
+        
+        for (let i=0; i<dirs.length; i++) {
+            const nx = curX + dirs[i][0];
+            const ny = curY + dirs[i][1];
+            if (nx>=0 && ny>=0 && nx<n && ny<m && !visited[nx][ny] && maps[nx][ny]) {
+                visited[nx][ny] = true;
+                queue.push([nx, ny]);
+                
+                //const cnt = meltingCnt([nx, ny]);
+                //const diff = maps[nx][ny] - cnt;
+                //maps[nx][ny] = diff < 0 ? 0 : diff;
+            }
+        }
+    }
+}
+
+
+const progress = (maps) => {
+    let cnt = 0;
+    const visited = Array.from(Array(n), () => Array(m).fill(false));
+
+    for (let i=0; i<n; i++) {
+        for (let j=0; j<m; j++) {
+            if (maps[i][j] !== 0 && !visited[i][j]) {
+                bfs([i, j], visited);
                 cnt++;
-                if (cnt > 1) return cnt;
-                bfs([x, y]);
             }
         }
     }
     return cnt;
 }
 
-
-
-let time = 0;
+let year = 0;
 
 while (true) {
-    if (!meltIceberg()) {
-        console.log(0);
-        return;
+    const cnt = progress(maps);
+    
+    if (cnt >= 2) break;
+    
+    if (cnt === 0) {
+        year = 0;
+        break;
     }
     
-    time++;
-    
-    if (countIceberg() >= 2) {
-        console.log(time);
-        return;
-    }
+    maps = melt();
+    year++;   
 }
+
+console.log(year);
 
